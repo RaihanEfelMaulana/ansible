@@ -26,12 +26,12 @@
     ansible_become_pass: "{{ sudo_password }}"
 
   tasks:
-    - name: Install pip for Pyton 3
-      ansible.builtin.package:
-        name: python3-pip
-        state: present 
+    #- name: Install pip for Pyton 3
+      #ansible.builtin.package:
+        #name: python3-pip
+        #state: present 
     
-    - name: Install passlib Phyton library
+    - name: Install passlib library
       ansible.builtin.pip:
         name: passlib 
         state: present
@@ -39,7 +39,7 @@
     - name: Ensure users are present
       ansible.builtin.user:
         name: "{{ item.name }}"
-        password: "{{ item.password | password_hash('sha512') }}"
+        password: "{{ item.password | password_hash('sha512_crypt') }}"
         state: present
         shell: /bin/bash
       loop:
