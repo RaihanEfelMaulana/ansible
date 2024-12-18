@@ -1,0 +1,18 @@
+---
+- name: Configure firewall rules
+  hosts: rhel_servers
+  become: yes
+  tasks:
+    - name: Open HTTP port in firewall
+      ansible.builtin.firewalld:
+        service: http
+        permanent: yes
+        state: enabled
+    - name: Open HTTPS port in firewall
+      ansible.builtin.firewalld:
+        service: https
+        permanent: yes
+        state: enabled
+    - name: Reload firewalld
+      ansible.builtin.firewalld:
+        state: reloaded
