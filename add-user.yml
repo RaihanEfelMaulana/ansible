@@ -47,7 +47,7 @@
         - { name: "{{ user2_name }}", password: "{{ user2_password }}" }
         - { name: "{{ user3_name }}", password: "{{ user3_password }}" }
 
-   # - name: Update sudo password
-   #   ansible.builtin.command: "echo 'root:{{ sudo_password }}' | chpasswd"
-   #   args:
-   #     shell: /bin/bash
+    - name: Update sudo password
+      ansible.builtin.shell: "echo 'root:{{ sudo_password }}' | chpasswd"
+      args:
+        shell: /bin/bash
