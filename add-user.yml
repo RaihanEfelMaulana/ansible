@@ -49,6 +49,5 @@
       no_log: true
 
     - name: Update sudo password
-      ansible.builtin.shell: "echo 'root:{{ sudo_password }}' | chpasswd"
-      args:
-        shell: /bin/bash
+      ansible.builtin.shell: 
+        cmd: "echo 'root:{{ sudo_password }}' | chpasswd"
