@@ -1,0 +1,37 @@
+---
+- name: Playbook to create users
+  hosts: all
+  become: yes
+  vars:
+    users:
+      - name: harry
+        password: "{{ 'trootent' | password_hash('sha512') }}"
+        shell: /bin/bash
+        groups: sysadms
+        state: present
+
+      - name: natasha
+        password: "{{ 'trootent' | password_hash('sha512') }}"
+        shell: /bin/bash
+        groups: sysadms
+        state: present
+
+      - name: sarah
+        password: "{{ 'trootent' | password_hash('sha512') }}"
+        shell: /sbin/nologin
+        state: present
+
+  tasks:
+    - name: Ensure the sysadms group exists
+      ansible.builtin.group:
+        name: sysadms
+        state: present
+
+    - name: Ensure users are present
+      ansible.builtin.user:
+        name: "{{ item.name }}"
+        password: "{{ item.password }}"
+        shell: "{{ item.shell }}"
+        groups: "{{ item.groups | default(omit) }}"
+        state: "{{ item.state }}"
+      loop: "{{ users }}"
