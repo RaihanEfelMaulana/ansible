@@ -1,0 +1,16 @@
+---
+- name: Manage users and groups
+  hosts: all
+  become: yes
+  tasks:
+    - name: Create a new user
+      ansible.builtin.user:
+        name: "newuser"
+        state: present
+        password: "{{ 'password' | password_hash('sha512') }}"
+        groups: "sudo"
+    - name: Add user to the group
+      ansible.builtin.user:
+        name: "newuser"
+        group: "admin"
+        append: yes
