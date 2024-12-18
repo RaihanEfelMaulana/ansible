@@ -1,6 +1,6 @@
 ---
 - name: Configure firewall rules
-  hosts: rhel_servers
+  hosts: all
   become: yes
   tasks:
     - name: Open HTTP port in firewall
