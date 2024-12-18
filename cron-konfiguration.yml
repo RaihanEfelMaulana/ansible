@@ -1,6 +1,6 @@
 ---
 - name: Manage cron jobs
-  hosts: rhel_servers
+  hosts: all
   become: yes
   tasks:
     - name: Add cron job to run backup daily
