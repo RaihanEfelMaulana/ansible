@@ -3,9 +3,6 @@
   hosts: all
   become: yes
   vars_prompt:
-    - name: "sudo_password"
-      prompt: "Masukkan password sudo"
-      private: yes  # Menyembunyikan input password
     - name: "user1_name"
       prompt: "Masukkan nama pengguna pertama (harry)"
       private: no
@@ -24,6 +21,9 @@
     - name: "user3_password"
       prompt: "Masukkan password untuk pengguna ketiga (sarah)"
       private: yes
+
+  vars:
+    ansible_become_pass: "{{ sudo_password }}"
 
   tasks:
     - name: Ensure users are present
