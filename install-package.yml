@@ -1,0 +1,14 @@
+---
+- name: Install and configure Apache
+  hosts: rhel_servers
+  become: yes
+  tasks:
+    - name: Install Apache
+      ansible.builtin.yum:
+        name: httpd
+        state: present
+    - name: Start Apache service
+      ansible.builtin.service:
+        name: httpd
+        state: started
+        enabled: yes
