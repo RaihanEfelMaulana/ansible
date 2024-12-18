@@ -1,6 +1,6 @@
 ---
 - name: Install and configure Apache
-  hosts: rhel_servers
+  hosts: all
   become: yes
   tasks:
     - name: Install Apache
