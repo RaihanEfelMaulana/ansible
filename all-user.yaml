@@ -1,0 +1,11 @@
+---
+- name: List all users on the server
+  hosts: all
+  tasks:
+    - name: Get user list from /etc/passwd
+      command: "getent passwd"
+      register: users_output
+
+    - name: Display all users
+      debug:
+        msg: "{{ users_output.stdout_lines }}"
