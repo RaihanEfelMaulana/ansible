@@ -1,0 +1,10 @@
+---
+- name: Deploy configuration files
+  hosts: rhel_servers
+  become: yes
+  tasks:
+    - name: Copy configuration file
+      ansible.builtin.copy:
+        src: /path/to/local/config.conf
+        dest: /etc/app/config.conf
+        mode: '0644'
