@@ -1,6 +1,6 @@
 ---
 - name: Update all packages on RHEL servers
-  hosts: rhel_servers
+  hosts: all
   become: yes
   tasks:
     - name: Update all packages
