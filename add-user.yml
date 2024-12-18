@@ -26,6 +26,11 @@
     ansible_become_pass: "{{ sudo_password }}"
 
   tasks:
+    - name: Install pip for Pyton 3
+      ansible.builtin.package:
+        name: python3-pip
+        state: present 
+    
     - name: Install passlib Phyton library
       ansible.builtin.pip:
         name: passlib 
