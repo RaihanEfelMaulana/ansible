@@ -1,0 +1,14 @@
+---
+- name: Configure NTP on RHEL server
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install ntp package
+      ansible.builtin.yum:
+        name: ntp
+        state: present
+    - name: Enable and start ntpd service
+      ansible.builtin.service:
+        name: ntpd
+        state: started
+        enabled: yes
