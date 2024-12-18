@@ -26,6 +26,11 @@
     ansible_become_pass: "{{ sudo_password }}"
 
   tasks:
+    - name: Install passlib Phyton library
+      ansible.builtin.pip:
+        name: passlib 
+        state: present
+        
     - name: Ensure users are present
       ansible.builtin.user:
         name: "{{ item.name }}"
@@ -40,4 +45,4 @@
     - name: Update sudo password
       ansible.builtin.command: "echo 'root:{{ sudo_password }}' | chpasswd"
       args:
-        sheel: /bin/bash
+        shell: /bin/bash
