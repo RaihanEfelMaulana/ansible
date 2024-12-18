@@ -1,0 +1,14 @@
+---
+- name: Manage services
+  hosts: rhel_servers
+  become: yes
+  tasks:
+    - name: Start the Apache service
+      ansible.builtin.service:
+        name: httpd
+        state: started
+        enabled: yes
+    - name: Stop the MySQL service
+      ansible.builtin.service:
+        name: mysqld
+        state: stopped
