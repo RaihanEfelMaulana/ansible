@@ -1,0 +1,12 @@
+---
+- name: Manage cron jobs
+  hosts: rhel_servers
+  become: yes
+  tasks:
+    - name: Add cron job to run backup daily
+      ansible.builtin.cron:
+        name: "Backup task"
+        minute: "0"
+        hour: "2"
+        job: "/usr/bin/backup_script.sh"
+        state: present
