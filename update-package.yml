@@ -1,0 +1,9 @@
+---
+- name: Update all packages on RHEL servers
+  hosts: rhel_servers
+  become: yes
+  tasks:
+    - name: Update all packages
+      ansible.builtin.yum:
+        name: "*"
+        state: latest
