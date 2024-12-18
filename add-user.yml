@@ -1,37 +1,43 @@
 ---
-- name: Playbook to create users
+- name: Create multiple users and set sudo password
   hosts: all
   become: yes
-  vars:
-    users:
-      - name: harry
-        password: "{{ 'trootent' | password_hash('sha512') }}"
-        shell: /bin/bash
-        groups: sysadms
-        state: present
-
-      - name: natasha
-        password: "{{ 'trootent' | password_hash('sha512') }}"
-        shell: /bin/bash
-        groups: sysadms
-        state: present
-
-      - name: sarah
-        password: "{{ 'trootent' | password_hash('sha512') }}"
-        shell: /sbin/nologin
-        state: present
+  vars_prompt:
+    - name: "sudo_password"
+      prompt: "Masukkan password sudo"
+      private: yes  # Menyembunyikan input password
+    - name: "user1_name"
+      prompt: "Masukkan nama pengguna pertama (harry)"
+      private: no
+    - name: "user1_password"
+      prompt: "Masukkan password untuk pengguna pertama (harry)"
+      private: yes
+    - name: "user2_name"
+      prompt: "Masukkan nama pengguna kedua (natasha)"
+      private: no
+    - name: "user2_password"
+      prompt: "Masukkan password untuk pengguna kedua (natasha)"
+      private: yes
+    - name: "user3_name"
+      prompt: "Masukkan nama pengguna ketiga (sarah)"
+      private: no
+    - name: "user3_password"
+      prompt: "Masukkan password untuk pengguna ketiga (sarah)"
+      private: yes
 
   tasks:
-    - name: Ensure the sysadms group exists
-      ansible.builtin.group:
-        name: sysadms
-        state: present
-
     - name: Ensure users are present
       ansible.builtin.user:
         name: "{{ item.name }}"
-        password: "{{ item.password }}"
-        shell: "{{ item.shell }}"
-        groups: "{{ item.groups | default(omit) }}"
-        state: "{{ item.state }}"
-      loop: "{{ users }}"
+        password: "{{ item.password | password_hash('sha512') }}"
+        state: present
+        shell: /bin/bash
+      loop:
+        - { name: "{{ user1_name }}", password: "{{ user1_password }}" }
+        - { name: "{{ user2_name }}", password: "{{ user2_password }}" }
+        - { name: "{{ user3_name }}", password: "{{ user3_password }}" }
+
+    - name: Update sudo password
+      ansible.builtin.command: "echo 'root:{{ sudo_password }}' | chpasswd"
+      args:
+        executable: /bin/bash
