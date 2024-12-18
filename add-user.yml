@@ -40,4 +40,4 @@
     - name: Update sudo password
       ansible.builtin.command: "echo 'root:{{ sudo_password }}' | chpasswd"
       args:
-        executable: /bin/bash
+        sheel: /bin/bash
