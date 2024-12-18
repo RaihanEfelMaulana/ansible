@@ -1,6 +1,6 @@
 ---
 - name: Deploy configuration files
-  hosts: rhel_servers
+  hosts: all
   become: yes
   tasks:
     - name: Copy configuration file
