@@ -1,0 +1,7 @@
+- name: Install packages on Windows
+  hosts: all
+  tasks:
+    - name: Install Notepad++
+      ansible.windows.win_chocolatey:
+        name: notepadplusplus
+        state: present
