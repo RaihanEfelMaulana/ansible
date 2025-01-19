@@ -1,0 +1,5 @@
+- name: List all users on Windows
+  hosts: all
+  tasks:
+    - name: Get user list
+      ansible.windows.win_shell: "Get-LocalUser | Select-Object Name"
