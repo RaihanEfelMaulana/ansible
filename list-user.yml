@@ -1,5 +1,5 @@
 - name: Create a folder named 'test' on a Windows host
-  hosts: windows
+  hosts: all
   tasks:
     - name: Create folder 'test' in C:\
       ansible.windows.win_file:
