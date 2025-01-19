@@ -1,6 +1,8 @@
 ---
 - name: Get list of local users on Windows
   hosts: windows-demo
+  vars:
+    ansible_remote_tmp: C:\Windows\Temp\ansible
   tasks:
     - name: List local users
       win_shell: "Get-LocalUser | Select-Object Name"
