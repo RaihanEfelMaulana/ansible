@@ -19,6 +19,6 @@
         groups: TMM
         state: present
       loop:
-       - user1
-       - user2
-       - user3
+       - Sean
+       - Colin
+       - Anshul
