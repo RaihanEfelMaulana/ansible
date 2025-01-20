@@ -1,3 +1,4 @@
+---
 - name: Create local machine users
   hosts: windowsgroup
   gather_facts: no
@@ -11,13 +12,13 @@
         name: TMM
         state: present
 
-    - name: Create DevOps users with different passwords
+    - name: Create DevOps users
       ansible.windows.win_user:
         name: "{{ item }}"
-        password: "{{ users[item] }}"
+        password: "{{ tmm_password }}"
         groups: TMM
         state: present
       loop:
-        - user1
-        - user2
-        - user3
+       - user1
+       - user2
+       - user3
