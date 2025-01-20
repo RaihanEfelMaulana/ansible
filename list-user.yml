@@ -1,6 +1,6 @@
 ---
 - name: Get list of local users on Windows
-  hosts: windowsdemo
+  hosts: windowsgroup
   tasks:
     - name: List local users
       win_shell: "Get-LocalUser | Select-Object Name"
