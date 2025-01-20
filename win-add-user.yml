@@ -1,0 +1,23 @@
+- name: Create local machine users
+  hosts: windowsgroup
+  gather_facts: no
+
+  vars_files:
+    - pass.yml ## Vault file
+
+  tasks:
+    - name: Create TMM group
+      ansible.windows.win_group:
+        name: TMM
+        state: present
+
+    - name: Create DevOps users with different passwords
+      ansible.windows.win_user:
+        name: "{{ item }}"
+        password: "{{ users[item] }}"
+        groups: TMM
+        state: present
+      loop:
+        - user1
+        - user2
+        - user3
