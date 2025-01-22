@@ -4,7 +4,7 @@
   gather_facts: no
 
   vars_files:
-    - pass.yml ## Vault file
+    - /root/pass.yml  # Path absolut ke file Vault
 
   tasks:
     - name: Create TMM group
@@ -16,9 +16,10 @@
       ansible.windows.win_user:
         name: "{{ item }}"
         password: "{{ tmm_password }}"
-        groups: TMM
+        groups:
+          - TMM
         state: present
       loop:
-       - Sean
-       - Colin
-       - Anshul
+        - Sean
+        - Colin
+        - Anshul
