@@ -1,25 +1,25 @@
 ---
-- name: Create local machine users
+- name: Create local users on Windows
   hosts: windowsgroup
   gather_facts: no
 
-  vars_files:
-    - /root/pass.yml  # Path absolut ke file Vault
-
   tasks:
-    - name: Create TMM group
+    - name: Create a local group
       ansible.windows.win_group:
-        name: TMM
+        name: Developers
         state: present
 
-    - name: Create DevOps users
+    - name: Create local users and add to Developers group
       ansible.windows.win_user:
-        name: "{{ item }}"
-        password: "{{ tmm_password }}"
+        name: "{{ item.name }}"
+        password: "{{ item.password }}"
         groups:
-          - TMM
+          - Developers
         state: present
       loop:
-        - Sean
-        - Colin
-        - Anshul
+        - name: user1
+          password: "Password123!"
+        - name: user2
+          password: "Password123!"
+        - name: user3
+          password: "Password123!"
