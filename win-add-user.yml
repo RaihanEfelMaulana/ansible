@@ -15,7 +15,7 @@
     - name: Create DevOps users
       ansible.windows.win_user:
         name: "{{ item }}"
-        password: "{{ tmm_password }}"
+        password: "{{ user_password }}"
         groups: TMM
         state: present
       loop:
