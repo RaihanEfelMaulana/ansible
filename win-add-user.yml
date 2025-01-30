@@ -4,7 +4,7 @@
   gather_facts: no
 
   vars_files:
-    - secrets.yml ## Vault file
+    - passwd.yml ## Vault file
 
   tasks:
     - name: Create TMM group
@@ -15,7 +15,7 @@
     - name: Create DevOps users
       ansible.windows.win_user:
         name: "{{ item }}"
-        password: "{{ user_password }}"
+        password: "{{ tmm_password }}"
         groups: TMM
         state: present
       loop:
