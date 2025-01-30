@@ -1,7 +1,6 @@
 ---
 - name: Create local users on Windows
   hosts: windowsgroup
-  become: yes
   vars_files:
     - secrets.yml
   tasks:
