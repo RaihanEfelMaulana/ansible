@@ -1,25 +1,11 @@
 ---
 - name: Create local users on Windows
   hosts: windowsgroup
-  gather_facts: no
-
+  become: yes
+  vars_files:
+    - secrets.yml
   tasks:
-    - name: Create a local group
-      ansible.windows.win_group:
-        name: Developers
-        state: present
-
-    - name: Create local users and add to Developers group
-      ansible.windows.win_user:
-        name: "{{ item.name }}"
-        password: "{{ item.password }}"
-        groups:
-          - Developers
-        state: present
-      loop:
-        - name: user1
-          password: "Password123!"
-        - name: user2
-          password: "Password123!"
-        - name: user3
-          password: "Password123!"
+    - name: Create user with encrypted password
+      ansible.builtin.user:
+        name: johndoe
+        password: "{{ user_password }}"
