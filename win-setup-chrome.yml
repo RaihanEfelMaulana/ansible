@@ -8,5 +8,5 @@
   - name: Install required software
     chocolatey.chocolatey.win_chocolatey:
       name:
-      - googlechrome
+      - podman-desktop
       state: present
