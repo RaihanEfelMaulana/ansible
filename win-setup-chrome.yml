@@ -1,32 +1,12 @@
 ---
-- name: Install Google Chrome on Windows (Without Chocolatey)
+- name: Provision System Software
   hosts: windowsgroup
   gather_facts: false
 
   tasks:
-    - name: Download Google Chrome Installer
-      ansible.windows.win_get_url:
-        url: "https://dl.google.com/chrome/install/latest/chrome_installer.exe"
-        dest: "\\Downloads\\chrome_installer.exe"
-
-    - name: Install Google Chrome
-      ansible.windows.win_package:
-        path: "\\Downloads\\chrome_installer.exe"
-        arguments: "/silent /install"
-        state: present
-
-
-
-
-##---
-##- name: Provision System Software
-##  hosts: windowsgroup
-##  gather_facts: false
-
-##  tasks:
   ## Add tasks or uncomment the below
-##  - name: Install required software
-##    chocolatey.chocolatey.win_chocolatey:
-##      name:
-##      - googlechrome
-##      state: present
+  - name: Install required software
+    chocolatey.chocolatey.win_chocolatey:
+      name:
+      - googlechrome
+      state: present
