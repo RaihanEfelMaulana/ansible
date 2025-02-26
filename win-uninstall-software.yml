@@ -1,0 +1,10 @@
+- name: Uninstall System Software
+  hosts: windowsgroup
+  gather_facts: false
+
+  tasks:
+    - name: Uninstall required software
+      chocolatey.chocolatey.win_chocolatey:
+        name: 
+          - podman-desktop
+        state: absent
