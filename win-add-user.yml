@@ -1,28 +1,39 @@
 ---
-- name: Create local machine users
-  hosts: windowsgroup
+- name: Tambahkan User di Windows
+  hosts: windows
   gather_facts: no
-
-  vars_files:
-    - secret.yml ## Vault file
-
   tasks:
-    - name: Create TMM group
-      ansible.windows.win_group:
-        name: TMM
+    - name: Tambahkan user baru
+      ansible.windows.win_user:
+        name: johndoe
+        password: P@ssw0rd!
         state: present
 
-    - name: Create DevOps users
-      ansible.windows.win_user:
-        name: "{{ item }}"
-        password: "{{ user_password }}"
-        groups: TMM
-        state: present
-      loop:
-       - Sean
-       - Colin
-       - Anshul
-       - Hicham
-       - Leo
-       - Roger
-       - Nuno
+#---
+#- name: Create local machine users
+#  hosts: windowsgroup
+#  gather_facts: no
+
+#  vars_files:
+#    - secret.yml ## Vault file
+
+#  tasks:
+#    - name: Create TMM group
+#      ansible.windows.win_group:
+#        name: TMM
+#        state: present
+
+#    - name: Create DevOps users
+#      ansible.windows.win_user:
+#        name: "{{ item }}"
+#        password: "{{ user_password }}"
+#        groups: TMM
+#        state: present
+#      loop:
+#       - Sean
+#       - Colin
+#       - Anshul
+#       - Hicham
+#       - Leo
+#       - Roger
+#       - Nuno
