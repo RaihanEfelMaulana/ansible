@@ -1,41 +1,44 @@
 - hosts: all
   become: yes
-
   vars:
     oscap_profile: ospp
-    oscap_policy: ssg-rhel9-ds  # Ganti dengan policy untuk RHEL 9
+    oscap_policy: ssg-rhel9-ds  # Ganti dengan policy yang sesuai untuk RHEL 9
 
   tasks:
+    - name: Install OpenSCAP Scanner and Security Guide
+      ansible.builtin.package:
+        name: 
+          - openscap-scanner
+          - scap-security-guide
+        state: latest
 
-  - name: Install OpenSCAP Scanner and Security Guide
-    package:
-      name: 
-        - openscap-scanner
-        - scap-security-guide
-      state: latest
+    - block:
+        - name: Run OpenSCAP Scan
+          ansible.builtin.command:
+            cmd: >
+              oscap xccdf eval 
+              --profile {{ oscap_profile }} 
+              --results /tmp/oscap-arf.xml 
+              --report /tmp/oscap-report.html 
+              --fetch-remote-resources 
+              /usr/share/xml/scap/ssg/content/{{ oscap_policy }}.xml
+          register: scap_cmd
+          ignore_errors: true
 
-  - block:
-    - name: Run OpenSCAP Scan
-      ansible.builtin.command: oscap xccdf eval \ 
-        --profile {{ oscap_profile }} \ 
-        --results /tmp/oscap-arf.xml \ 
-        --report /tmp/oscap-report.html \ 
-        --fetch-remote-resources \ 
-        /usr/share/xml/scap/ssg/content/{{ oscap_policy }}.xml
-      ignore_errors: true
-      register: scap_cmd 
+        - name: Generate OpenSCAP Remediation Playbook
+          ansible.builtin.command:
+            cmd: >
+              oscap xccdf generate fix 
+              --fix-type ansible 
+              --result-id "" 
+              /tmp/oscap-arf.xml 
+              --output /tmp/oscap-remediation.yml
+          register: rem_cmd
+          ignore_errors: true
 
-    - name: Generate OpenSCAP Remediation Playbook
-      ansible.builtin.command: oscap xccdf generate fix \
-        --fix-type ansible \
-        --result-id "" /tmp/oscap-arf.xml \
-        --output /tmp/oscap-remediation.yml
-      ignore_errors: true
-      register: rem_cmd
-    
-    always:
-    - name: Download Report to Local Machine
-      fetch:
-        src: /tmp/oscap-report.html
-        dest: /oscap-reports/{{ inventory_hostname }}.html
-        flat: yes
+      always:
+        - name: Download Report to Local Machine
+          ansible.builtin.fetch:
+            src: /tmp/oscap-report.html
+            dest: "oscap-reports/{{ inventory_hostname }}.html"
+            flat: yes
