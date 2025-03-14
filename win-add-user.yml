@@ -1,9 +1,9 @@
 ---
-- name: Tambahkan User di Windows
+- name: Add User Windows
   hosts: windowsgroup
   gather_facts: no
   tasks:
-    - name: Tambahkan user baru
+    - name: Add new user
       ansible.windows.win_user:
         name: johndoe
         password: P@ssw0rd!
