@@ -1,0 +1,25 @@
+---
+- name: Retrieve VMware Information
+  hosts: localhost
+  gather_facts: false
+  collections:
+    - community.vmware  # Correct collection
+  vars:
+    vcenter_hostname: "192.168.51.100"
+    vcenter_username: "administrator@vsphere.local"
+    vcenter_password: "P@ssw0rd.1"
+    vm_name: "rhel8-test"  # Change to the VM you want to query
+
+  tasks:
+    - name: Gather information about a specific VM
+      community.vmware.vmware_vm_info:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        vm_name: "{{ vm_name }}"
+        validate_certs: false
+      register: vm_info
+
+    - name: Display gathered information
+      ansible.builtin.debug:
+        var: vm_info
