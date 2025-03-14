@@ -8,7 +8,7 @@
     vcenter_hostname: "192.168.51.100"
     vcenter_username: "administrator@vsphere.local"
     vcenter_password: "P@ssw0rd.1"
-    vm_name: "rhel8-test"  # Change to the VM you want to query
+    vm_name: "rhel-rhn"  # Change to the VM you want to query
 
   tasks:
     - name: Gather information about a specific VM
