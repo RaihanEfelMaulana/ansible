@@ -1,6 +1,6 @@
 ---
 - name: Tambahkan User di Windows
-  hosts: windows
+  hosts: windowsgroup
   gather_facts: no
   tasks:
     - name: Tambahkan user baru
