@@ -3,10 +3,13 @@
   hosts: windowsgroup
   gather_facts: no
   tasks:
-    - name: Get Windows System Logs
-      ansible.windows.win_shell: Get-EventLog -LogName System -Newest 10
+    - name: Get Windows System Logs in JSON
+      ansible.windows.win_shell: |
+        Get-EventLog -LogName System -Newest 10 | 
+        Select-Object Index, TimeGenerated, EntryType, Source, InstanceId, Message | 
+        ConvertTo-Json -Depth 3
       register: system_logs
 
     - name: Display Logs in Terminal
       debug:
-        msg: "{{ system_logs.stdout_lines }}"
+        msg: "{{ system_logs.stdout | from_json }}"
