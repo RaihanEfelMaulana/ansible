@@ -5,6 +5,6 @@
   tasks:
     - name: Add new user
       ansible.windows.win_user:
-        name: johndoe
-        password: P@ssw0rd!
+        name: "johndoe"   # Nama user tetap
+        password: "{{ user_password }}"  # Password dari Survey
         state: present
