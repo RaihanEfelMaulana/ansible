@@ -1,0 +1,12 @@
+---
+- name: Show Windows Event Viewer Logs
+  hosts: windowsgroup
+  gather_facts: no
+  tasks:
+    - name: Get Windows System Logs
+      ansible.windows.win_shell: Get-EventLog -LogName System -Newest 10
+      register: system_logs
+
+    - name: Display Logs in Terminal
+      debug:
+        msg: "{{ system_logs.stdout_lines }}"
