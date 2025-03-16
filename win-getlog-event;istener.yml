@@ -6,7 +6,9 @@
     - name: Get Windows System Logs in JSON
       ansible.windows.win_shell: |
         Get-EventLog -LogName System -Newest 10 | 
-        Select-Object Index, TimeGenerated, EntryType, Source, InstanceId, Message | 
+        Select-Object Index, 
+                      @{Name="TimeGenerated"; Expression={ $_.TimeGenerated.ToString("yyyy-MM-dd HH:mm:ss") }}, 
+                      EntryType, Source, InstanceId, Message | 
         ConvertTo-Json -Depth 3
       register: system_logs
 
