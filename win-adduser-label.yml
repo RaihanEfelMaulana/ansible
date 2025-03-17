@@ -13,6 +13,7 @@
         - HR
 
     - name: Add new users
+      no_log: true  
       ansible.windows.win_user:
         name: "{{ item.name }}"
         password: "{{ item.password }}"
@@ -32,21 +33,3 @@
         - { name: 'alice', division: 'Marketing' }
         - { name: 'bob', division: 'Product' }
         - { name: 'charlie', division: 'HR' }
-
-
-#---
-#- name: Add User Windows
-#  hosts: windowsgroup
-#  gather_facts: no
-#  tasks:
-#    - name: Add new users
-#      ansible.windows.win_user:
-#        name: "{{ item }}"  
-#        password: "{{ user_password }}"  
-#        state: present
-#      loop:
-#        - johndoe
-#        - raihan   
-#        - user123 
-
-
