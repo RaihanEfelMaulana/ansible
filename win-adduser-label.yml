@@ -1,17 +1,37 @@
 ---
-- name: Add User Windows
+- name: Add User Windows Based on Division
   hosts: windowsgroup
   gather_facts: no
   tasks:
-    - name: Add new users
-      ansible.windows.win_user:
-        name: "{{ item }}"  
-        password: "{{ user_password }}"  
+    - name: Create division-based groups
+      ansible.windows.win_group:
+        name: "{{ item }}"
         state: present
       loop:
-        - johndoe
-        - raihan   
-        - user123 
+        - Marketing
+        - Product
+        - HR
+
+    - name: Add new users
+      ansible.windows.win_user:
+        name: "{{ item.name }}"
+        password: "{{ item.password }}"
+        state: present
+      loop:
+        - { name: 'alice', password: '{{ user_password }}', division: 'Marketing' }
+        - { name: 'bob', password: '{{ user_password }}', division: 'Product' }
+        - { name: 'charlie', password: '{{ user_password }}', division: 'HR' }
+
+    - name: Assign users to their respective groups
+      ansible.windows.win_group_membership:
+        name: "{{ item.division }}"
+        members:
+          - "{{ item.name }}"
+        state: present
+      loop:
+        - { name: 'alice', division: 'Marketing' }
+        - { name: 'bob', division: 'Product' }
+        - { name: 'charlie', division: 'HR' }
 
 
 #---
@@ -19,8 +39,14 @@
 #  hosts: windowsgroup
 #  gather_facts: no
 #  tasks:
-#    - name: Add new user
+#    - name: Add new users
 #      ansible.windows.win_user:
-#        name: "johndoe" 
-#        password: "{{ user_password }}" 
+#        name: "{{ item }}"  
+#        password: "{{ user_password }}"  
 #        state: present
+#      loop:
+#        - johndoe
+#        - raihan   
+#        - user123 
+
+
