@@ -20,7 +20,7 @@
         state: present
       loop:
         - { name: 'alice', password: '{{ user_password }}', division: 'Marketing' }
-        - { name: 'bob', password: '{{ user_password }}', division: 'Product' }
+        - { name: 'raihan', password: '{{ user_password }}', division: 'Product' }
         - { name: 'charlie', password: '{{ user_password }}', division: 'HR' }
 
     - name: Assign users to their respective groups
@@ -31,5 +31,5 @@
         state: present
       loop:
         - { name: 'alice', division: 'Marketing' }
-        - { name: 'bob', division: 'Product' }
+        - { name: 'raihan', division: 'Product' }
         - { name: 'charlie', division: 'HR' }
