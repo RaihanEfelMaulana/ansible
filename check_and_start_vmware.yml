@@ -1,0 +1,24 @@
+- name: Check ping and start VMware VM if down
+  hosts: localhost
+  gather_facts: false
+  vars:
+    vm_name: my-vm-name            # GANTI dengan nama VM di vCenter
+    vcenter_hostname: vcenter.local     # GANTI dengan alamat vCenter
+    vcenter_username: administrator@vsphere.local
+    vcenter_password: your_password
+
+  tasks:
+    - name: Ping VM
+      shell: ping -c 2 192.168.30.17
+      register: ping_result
+      ignore_errors: true
+
+    - name: Power on VM via vCenter if ping failed
+      when: ping_result.rc != 0
+      community.vmware.vmware_guest_powerstate:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        validate_certs: no
+        name: "{{ vm_name }}"
+        state: powered-on
