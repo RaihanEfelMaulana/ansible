@@ -1,5 +1,5 @@
 - name: Check ping and start VMware VM if down
-  hosts: localhost
+  hosts: all
   gather_facts: false
   vars:
     vm_name: my-vm-name            # GANTI dengan nama VM di vCenter
