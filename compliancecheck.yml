@@ -46,8 +46,9 @@
         --result-id ""
         /tmp/oscap-arf.xml
         --output /tmp/oscap-remediation.yml
-      ignore_errors: true
+      #ignore_errors: true
       register: rem_cmd
+      failed_when: false
 
     always:
 
