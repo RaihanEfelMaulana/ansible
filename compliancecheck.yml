@@ -36,8 +36,9 @@
         --report /tmp/oscap-report.html
         --fetch-remote-resources
         /usr/share/xml/scap/ssg/content/{{ oscap_policy }}.xml
-      ignore_errors: true
+      #ignore_errors: true
       register: scap_cmd
+      failed_when: false
 
     - name: Generate remediation playbook
       ansible.builtin.command: >
@@ -46,10 +47,9 @@
         --result-id ""
         /tmp/oscap-arf.xml
         --output /tmp/oscap-remediation.yml
-      #ignore_errors: true
+      ignore_errors: true
       register: rem_cmd
-      failed_when: false
-
+      
     always:
 
     - name: Fetch scan report
