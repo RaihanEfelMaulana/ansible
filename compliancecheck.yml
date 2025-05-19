@@ -1,0 +1,58 @@
+---
+- name: SCAP Compliance Scan on RHEL 9
+  hosts: all
+  become: true
+
+  vars:
+    oscap_profile: ospp
+    oscap_policy: ssg-rhel9-ds
+
+  tasks:
+
+  - name: Install OpenSCAP tools
+    package:
+      name:
+        - openscap-scanner
+        - scap-security-guide
+      state: latest
+
+  - name: Verify SCAP content exists
+    stat:
+      path: /usr/share/xml/scap/ssg/content/{{ oscap_policy }}.xml
+    register: scap_file
+
+  - name: Fail if SCAP content is missing
+    fail:
+      msg: "SCAP content file {{ oscap_policy }}.xml not found!"
+    when: not scap_file.stat.exists
+
+  - block:
+
+    - name: Run OpenSCAP scan
+      ansible.builtin.command: >
+        oscap xccdf eval
+        --profile {{ oscap_profile }}
+        --results /tmp/oscap-arf.xml
+        --report /tmp/oscap-report.html
+        --fetch-remote-resources
+        /usr/share/xml/scap/ssg/content/{{ oscap_policy }}.xml
+      ignore_errors: true
+      register: scap_cmd
+
+    - name: Generate remediation playbook
+      ansible.builtin.command: >
+        oscap xccdf generate fix
+        --fix-type ansible
+        --result-id ""
+        /tmp/oscap-arf.xml
+        --output /tmp/oscap-remediation.yml
+      ignore_errors: true
+      register: rem_cmd
+
+    always:
+
+    - name: Fetch scan report
+      fetch:
+        src: /tmp/oscap-report.html
+        dest: ./oscap-reports/{{ inventory_hostname }}.html
+        flat: yes
