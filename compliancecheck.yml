@@ -42,10 +42,15 @@
 
     - name: Generate remediation playbook
       ansible.builtin.command: >
-        oscap xccdf generate fix
-        --fix-type ansible
-        --result-id ""
-        /tmp/oscap-arf.xml
+        #oscap xccdf generate fix
+        #--fix-type ansible
+        #--result-id ""
+        #/tmp/oscap-arf.xml
+        #--output /tmp/oscap-remediation.yml
+        oscap xccdf generate fix \
+        --fix-type ansible \
+        --result-id xccdf_org.ssgproject.content_benchmark_RHEL-9-result \
+        /tmp/oscap-arf.xml \
         --output /tmp/oscap-remediation.yml
       ignore_errors: true
       register: rem_cmd
