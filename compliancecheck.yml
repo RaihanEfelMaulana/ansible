@@ -1,6 +1,6 @@
 ---
 - name: SCAP Compliance Scan on RHEL 9
-  hosts: restore
+  hosts: restore, backup
   become: true
 
   vars:
