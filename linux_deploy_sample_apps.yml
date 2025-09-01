@@ -1,0 +1,50 @@
+---
+- name: Deploy Web App otomatis
+  hosts: RHEL9-for-automate-deployment
+  become: yes
+  vars:
+    app_repo: "https://github.com/RaihanEfelMaulana/web-apps.git"
+    app_dest: "/var/www/html"
+    app_port: 80
+    app_url: "http://{{ ansible_host }}"
+
+  tasks:
+    - name: Install Apache HTTPD
+      yum:
+        name: httpd
+        state: present
+
+    - name: Start dan enable httpd
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+
+    - name: Pastikan git sudah terinstall
+      yum:
+        name: git
+        state: present
+
+    - name: Clone atau update repo web-app
+      git:
+        repo: "{{ app_repo }}"
+        dest: "{{ app_dest }}"
+        version: main
+        force: yes
+
+    - name: Set ownership dan permission
+      file:
+        path: "{{ app_dest }}"
+        owner: apache
+        group: apache
+        mode: '0755'
+        recurse: yes
+
+    - name: Restart Apache setelah update
+      service:
+        name: httpd
+        state: restarted
+
+    - name: Tampilkan URL aplikasi
+      debug:
+        msg: "Web App berhasil dideploy 🚀. Akses di {{ app_url }}"
