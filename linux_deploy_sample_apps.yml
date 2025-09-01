@@ -25,6 +25,9 @@
         name: git
         state: present
 
+    - name: Mark /var/www/html as safe directory
+      command: git config --global --add safe.directory /var/www/html
+
     - name: Clone atau update repo web-app
       git:
         repo: "{{ app_repo }}"
