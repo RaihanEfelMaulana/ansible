@@ -1,0 +1,8 @@
+---
+- name: Check connectivity to RHEL 9 servers
+  hosts: RHEL9-for-automate-deployment
+  gather_facts: no
+
+  tasks:
+    - name: Ping RHEL 9 servers
+      ansible.builtin.ping:
