@@ -1,0 +1,41 @@
+- name: Reset VM ke kondisi awal sebelum deploy web app
+  hosts: RHEL9-for-automate-deployment
+  become: yes
+  tasks:
+    - name: Stop dan disable Apache
+      service:
+        name: httpd
+        state: stopped
+        enabled: no
+
+    - name: Uninstall Apache dan Git
+      yum:
+        name:
+          - httpd
+          - git
+        state: absent
+
+    - name: Bersihkan folder web app
+      file:
+        path: /var/www/html
+        state: absent
+
+    - name: Buat ulang folder kosong /var/www/html
+      file:
+        path: /var/www/html
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: Tutup port HTTP & HTTPS di firewall
+      firewalld:
+        service: "{{ item }}"
+        state: disabled
+        permanent: yes
+      loop:
+        - http
+        - https
+
+    - name: Reload firewall
+      command: firewall-cmd --reload
