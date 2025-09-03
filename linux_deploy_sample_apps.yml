@@ -9,10 +9,38 @@
     app_url: "http://{{ ansible_host }}"
 
   tasks:
-    - name: Install Apache HTTPD
+    - name: Pastikan Apache HTTPD terinstall
       yum:
         name: httpd
         state: present
+
+    - name: Pastikan git terinstall
+      yum:
+        name: git
+        state: present
+
+    - name: Pastikan firewalld sudah terinstall
+      yum:
+        name: firewalld
+        state: present
+
+    - name: Pastikan firewalld aktif dan berjalan
+      service:
+        name: firewalld
+        state: started
+        enabled: yes
+
+    - name: Izinkan HTTP & HTTPS di firewall
+      firewalld:
+        service: "{{ item }}"
+        permanent: yes
+        state: enabled
+      loop:
+        - http
+        - https
+
+    - name: Reload firewall untuk menerapkan perubahan
+      command: firewall-cmd --reload
 
     - name: Start dan enable httpd
       service:
@@ -20,12 +48,7 @@
         state: started
         enabled: yes
 
-    - name: Pastikan git sudah terinstall
-      yum:
-        name: git
-        state: present
-
-    - name: Mark /var/www/html as safe directory
+    - name: Tandai /var/www/html sebagai safe directory untuk Git
       command: git config --global --add safe.directory /var/www/html
 
     - name: Clone atau update repo web-app
