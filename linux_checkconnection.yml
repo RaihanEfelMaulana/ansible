@@ -1,6 +1,6 @@
 ---
 - name: Check connectivity to RHEL 9 servers
-  hosts: rhel9-parrot
+  hosts: 10.129.0.76
   gather_facts: no
 
   tasks:
