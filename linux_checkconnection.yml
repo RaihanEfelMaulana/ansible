@@ -1,6 +1,6 @@
 ---
 - name: Check connectivity to RHEL 9 servers
-  hosts: RHEL9-for-automate-deployment
+  hosts: rhel9-parrot
   gather_facts: no
 
   tasks:
