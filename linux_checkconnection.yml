@@ -1,6 +1,6 @@
 ---
 - name: Check connectivity to RHEL 9 servers
-  hosts: 10.129.0.76
+  hosts: 10.128.1.152
   gather_facts: no
 
   tasks:
